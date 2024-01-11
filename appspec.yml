@@ -1,0 +1,12 @@
+version: 0.0
+os: linux
+
+hooks:
+  ApplicationsStop:
+    - location : scripts/stop_container.sh
+      timeout: 300
+      runas: root
+  ApplicationsStart:
+    - location : scripts/stop_container.sh
+      timeout: 300
+      runas: root    
