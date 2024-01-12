@@ -1,0 +1,46 @@
+version: 0.2
+
+env:
+  parameter-store:
+      DOCKER_REGISTRY_USERNAME : /myapp/docker-registry/username
+      DOCKER_REGISTRY_TOKEN : /myapp/docker-registry/token
+      DOCKER_REGISTRY_URL : /myapp/docker-registry/url
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+      # name: version
+  pre_build:
+    commands:
+       - pip install -r requirements.txt
+      
+  build:
+    commands:
+       - echo "Building Docker Image"
+       - echo "$DOCKER_REGISTRY_TOKEN" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
+       - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/sample-python-app:latest" .
+       - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/sample-python-app:latest"
+      # - command
+  post_build:
+    commands:
+       - echo "Build is successful"
+      # - command
+#reports:
+  #report-name-or-arn:
+    #files:
+      # - location
+      # - location
+    #base-directory: location
+    #discard-paths: yes
+    #file-format: JunitXml | CucumberJson
+artifacts:
+  files:
+     - "**/*"
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
