@@ -5,5 +5,4 @@ set -e
 docker pull kundan2312/sample-python-app
 
 # Run the Docker image as container
-docker run -d -p 6379:6379 redis:alpine
 docker run -d -p 8000:8000 kundan2312/sample-python-app
